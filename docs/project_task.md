@@ -118,8 +118,8 @@ Firebase 서비스들을 AI 개발 도구(Claude Code, Claude Desktop, Gemini CL
 
 #### 🔧 주요 작업
 1. **추가 Firebase 서비스** (4일)
-   - [ ] Firebase Hosting 지원
-   - [ ] Remote Config 관리
+   - [x] Firebase Hosting 지원
+   - [x] Remote Config 관리
    - [ ] Performance Monitoring 연동
 
 2. **보안 및 인증 강화** (3일)

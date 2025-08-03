@@ -10,7 +10,11 @@
       "Bash(git branch:*)",
       "Bash(git push:*)",
       "Bash(npm install)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "mcp__test-function__execute",
+      "Bash(npx tsc:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

@@ -10,6 +10,10 @@ import { firestoreTools, firestoreToolHandlers } from './firestore-tools';
 import { storageTools, storageToolHandlers } from './storage-tools';
 import { functionsTools, functionsToolHandlers } from './functions-tools';
 import { realtimeDatabaseTools, realtimeDatabaseToolHandlers } from './realtime-database-tools';
+import { analyticsTools, analyticsToolHandlers } from './analytics-tools';
+import { messagingTools, messagingToolHandlers } from './messaging-tools';
+import { hostingTools, hostingToolHandlers } from './hosting-tools';
+import { remoteConfigTools, remoteConfigToolHandlers } from './remote-config-tools';
 
 /**
  * All available tools
@@ -44,6 +48,18 @@ export const allTools: Tool[] = [
 
   // Realtime Database tools
   ...realtimeDatabaseTools,
+
+  // Analytics tools
+  ...analyticsTools,
+
+  // Messaging tools
+  ...messagingTools,
+
+  // Hosting tools
+  ...hostingTools,
+
+  // Remote Config tools
+  ...remoteConfigTools,
 ];
 
 /**
@@ -76,6 +92,18 @@ export const allToolHandlers = {
 
   // Realtime Database handlers
   ...realtimeDatabaseToolHandlers,
+
+  // Analytics handlers
+  ...analyticsToolHandlers,
+
+  // Messaging handlers
+  ...messagingToolHandlers,
+
+  // Hosting handlers
+  ...hostingToolHandlers,
+
+  // Remote Config handlers
+  ...remoteConfigToolHandlers,
 };
 
 export * from './auth-tools';
@@ -83,3 +111,7 @@ export * from './firestore-tools';
 export * from './storage-tools';
 export * from './functions-tools';
 export * from './realtime-database-tools';
+export * from './analytics-tools';
+export * from './messaging-tools';
+export * from './hosting-tools';
+export * from './remote-config-tools';

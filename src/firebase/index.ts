@@ -11,6 +11,10 @@ import { FirestoreService } from './firestore.service';
 import { StorageService } from './storage.service';
 import { FunctionsService } from './functions.service';
 import { RealtimeDatabaseService } from './realtime-database.service';
+import { AnalyticsService } from './analytics.service';
+import { MessagingService } from './messaging.service';
+import { HostingService } from './hosting.service';
+import { RemoteConfigService } from './remote-config.service';
 
 export class FirebaseServiceManager {
   private static instance: FirebaseServiceManager;
@@ -20,6 +24,10 @@ export class FirebaseServiceManager {
   private storageService: StorageService | null = null;
   private functionsService: FunctionsService | null = null;
   private realtimeDatabaseService: RealtimeDatabaseService | null = null;
+  private analyticsService: AnalyticsService | null = null;
+  private messagingService: MessagingService | null = null;
+  private hostingService: HostingService | null = null;
+  private remoteConfigService: RemoteConfigService | null = null;
 
   private constructor() {}
 
@@ -65,6 +73,10 @@ export class FirebaseServiceManager {
       this.storageService = new StorageService(this.app);
       this.functionsService = new FunctionsService(this.app);
       this.realtimeDatabaseService = new RealtimeDatabaseService(this.app);
+      this.analyticsService = new AnalyticsService(this.app);
+      this.messagingService = new MessagingService(this.app);
+      this.hostingService = new HostingService(this.app);
+      this.remoteConfigService = new RemoteConfigService(this.app);
 
       logger.info('Firebase Admin SDK initialized successfully', {
         projectId: config.firebase.projectId,
@@ -136,6 +148,46 @@ export class FirebaseServiceManager {
   }
 
   /**
+   * Get Analytics service
+   */
+  getAnalyticsService(): AnalyticsService {
+    if (!this.analyticsService) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.analyticsService;
+  }
+
+  /**
+   * Get Messaging service
+   */
+  getMessagingService(): MessagingService {
+    if (!this.messagingService) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.messagingService;
+  }
+
+  /**
+   * Get Hosting service
+   */
+  getHostingService(): HostingService {
+    if (!this.hostingService) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.hostingService;
+  }
+
+  /**
+   * Get Remote Config service
+   */
+  getRemoteConfigService(): RemoteConfigService {
+    if (!this.remoteConfigService) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.remoteConfigService;
+  }
+
+  /**
    * Cleanup Firebase resources
    */
   async cleanup(): Promise<void> {
@@ -147,6 +199,10 @@ export class FirebaseServiceManager {
       this.storageService = null;
       this.functionsService = null;
       this.realtimeDatabaseService = null;
+      this.analyticsService = null;
+      this.messagingService = null;
+      this.hostingService = null;
+      this.remoteConfigService = null;
       logger.info('Firebase resources cleaned up');
     }
   }
@@ -158,3 +214,7 @@ export * from './firestore.service';
 export * from './storage.service';
 export * from './functions.service';
 export * from './realtime-database.service';
+export * from './analytics.service';
+export * from './messaging.service';
+export * from './hosting.service';
+export * from './remote-config.service';
