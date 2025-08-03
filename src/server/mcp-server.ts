@@ -15,12 +15,16 @@ import {
 import { logger, config, validateEnvironment } from '@utils/index';
 import { FirebaseServiceManager } from '@firebase/index';
 import { allTools, allToolHandlers } from '@tools/index';
+import { AuthMiddleware, AuthConfig, defaultAuthConfig } from '@utils/auth-middleware';
+import { PermissionManager } from '@utils/permission-manager';
 
 export class FirebaseMCPServer {
   private server: Server;
   private isRunning = false;
+  private authMiddleware: AuthMiddleware;
+  private permissionManager: PermissionManager;
 
-  constructor() {
+  constructor(authConfig?: AuthConfig) {
     this.server = new Server(
       {
         name: config.server.name,
@@ -32,6 +36,10 @@ export class FirebaseMCPServer {
         },
       }
     );
+
+    // Initialize authentication and permission systems
+    this.authMiddleware = new AuthMiddleware(authConfig || defaultAuthConfig);
+    this.permissionManager = new PermissionManager();
 
     this.setupHandlers();
   }
@@ -67,18 +75,50 @@ export class FirebaseMCPServer {
       };
     });
 
-    // Call tool handler
+    // Call tool handler with authentication
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args } = request.params;
+      const headers = (request as any).headers || {};
 
       logger.debug('Tool called', { name, args });
 
-      const handler = allToolHandlers[name as keyof typeof allToolHandlers];
-      if (!handler) {
-        throw new Error(`Unknown tool: ${name}`);
-      }
+      try {
+        // Authenticate request
+        const authContext = await this.authMiddleware.authenticate(headers);
+        logger.debug('Authentication successful', { 
+          clientId: authContext.clientId,
+          permissions: authContext.permissions 
+        });
 
-      return await handler(args);
+        // Authorize action
+        const [service, action] = name.split('_');
+        const isAuthorized = this.authMiddleware.authorize(authContext, action, service);
+        
+        if (!isAuthorized) {
+          throw new Error(`Insufficient permissions for ${name}`);
+        }
+
+        // Find and execute handler
+        const handler = allToolHandlers[name as keyof typeof allToolHandlers];
+        if (!handler) {
+          throw new Error(`Unknown tool: ${name}`);
+        }
+
+        // Add auth context to args for handler use
+        const enrichedArgs = {
+          ...args,
+          _authContext: authContext
+        };
+
+        return await handler(enrichedArgs);
+      } catch (error: any) {
+        logger.warn('Tool execution failed', { 
+          name, 
+          error: error.message,
+          headers: Object.keys(headers)
+        });
+        throw error;
+      }
     });
 
     // Error handler
@@ -132,5 +172,40 @@ export class FirebaseMCPServer {
    */
   isServerRunning(): boolean {
     return this.isRunning;
+  }
+
+  /**
+   * Get authentication middleware
+   */
+  getAuthMiddleware(): AuthMiddleware {
+    return this.authMiddleware;
+  }
+
+  /**
+   * Get permission manager
+   */
+  getPermissionManager(): PermissionManager {
+    return this.permissionManager;
+  }
+
+  /**
+   * Update authentication configuration
+   */
+  updateAuthConfig(config: AuthConfig): void {
+    this.authMiddleware = new AuthMiddleware(config);
+    logger.info('Authentication configuration updated');
+  }
+
+  /**
+   * Add user permissions
+   */
+  addUserPermissions(userId: string, roles: string[], directPermissions?: string[]): void {
+    this.permissionManager.setUserPermissions({
+      userId,
+      roles,
+      directPermissions: directPermissions || [],
+      deniedPermissions: []
+    });
+    logger.info('User permissions added', { userId, roles });
   }
 }

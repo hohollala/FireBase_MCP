@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  firebase-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: firebase-mcp-server:latest
+    container_name: firebase-mcp-server
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+      - MCP_SERVER_PORT=3000
+    
+    # Port mapping (optional for HTTP mode)
+    ports:
+      - "3000:3000"
+    
+    # Volume mounts
+    volumes:
+      # Mount Firebase service account configuration
+      - ./config:/app/config:ro
+      # Mount logs directory
+      - ./logs:/app/logs
+      # Optional: Mount custom MCP configuration
+      - ./mcp-config.json:/app/mcp-config.json:ro
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Security
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Networks
+    networks:
+      - firebase-mcp-network
+
+# Development service with hot reload
+  firebase-mcp-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: firebase-mcp-server:dev
+    container_name: firebase-mcp-server-dev
+    restart: unless-stopped
+    profiles:
+      - dev
+    
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+    
+    ports:
+      - "3001:3000"
+    
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    
+    command: npm run dev
+    
+    networks:
+      - firebase-mcp-network
+
+networks:
+  firebase-mcp-network:
+    driver: bridge
+
+# Optional: Volume for persistent logs
+volumes:
+  firebase-mcp-logs:
+    driver: local

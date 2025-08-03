@@ -56,7 +56,7 @@ afterAll(() => {
 });
 
 // Global test utilities
-global.testUtils = {
+(global as any).testUtils = {
   createMockMCPRequest: (method: string, params: any) => ({
     jsonrpc: '2.0',
     id: Math.random(),
@@ -69,7 +69,7 @@ global.testUtils = {
     email: `${uid}@test.com`,
     emailVerified: true,
     displayName: `Test User ${uid}`,
-    photoURL: null,
+    photoURL: null as string | null,
     disabled: false,
     metadata: {
       creationTime: new Date().toISOString(),

@@ -15,6 +15,8 @@ import { AnalyticsService } from './analytics.service';
 import { MessagingService } from './messaging.service';
 import { HostingService } from './hosting.service';
 import { RemoteConfigService } from './remote-config.service';
+import { PerformanceService } from './performance.service';
+import { PermissionManager } from '../utils/permission-manager';
 
 export class FirebaseServiceManager {
   private static instance: FirebaseServiceManager;
@@ -28,6 +30,8 @@ export class FirebaseServiceManager {
   private messagingService: MessagingService | null = null;
   private hostingService: HostingService | null = null;
   private remoteConfigService: RemoteConfigService | null = null;
+  private performanceService: PerformanceService | null = null;
+  private permissionManager: PermissionManager | null = null;
 
   private constructor() {}
 
@@ -77,6 +81,8 @@ export class FirebaseServiceManager {
       this.messagingService = new MessagingService(this.app);
       this.hostingService = new HostingService(this.app);
       this.remoteConfigService = new RemoteConfigService(this.app);
+      this.performanceService = new PerformanceService(this.app);
+      this.permissionManager = new PermissionManager();
 
       logger.info('Firebase Admin SDK initialized successfully', {
         projectId: config.firebase.projectId,
@@ -188,6 +194,26 @@ export class FirebaseServiceManager {
   }
 
   /**
+   * Get Performance service
+   */
+  getPerformanceService(): PerformanceService {
+    if (!this.performanceService) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.performanceService;
+  }
+
+  /**
+   * Get Permission Manager
+   */
+  getPermissionManager(): PermissionManager {
+    if (!this.permissionManager) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.permissionManager;
+  }
+
+  /**
    * Cleanup Firebase resources
    */
   async cleanup(): Promise<void> {
@@ -203,6 +229,8 @@ export class FirebaseServiceManager {
       this.messagingService = null;
       this.hostingService = null;
       this.remoteConfigService = null;
+      this.performanceService = null;
+      this.permissionManager = null;
       logger.info('Firebase resources cleaned up');
     }
   }
@@ -218,3 +246,4 @@ export * from './analytics.service';
 export * from './messaging.service';
 export * from './hosting.service';
 export * from './remote-config.service';
+export * from './performance.service';

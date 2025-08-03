@@ -14,7 +14,11 @@
       "mcp__test-function__execute",
       "Bash(npx tsc:*)",
       "Bash(mv:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npm test)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(npx jest:*)",
+      "Bash(chmod:*)"
     ],
     "deny": []
   }

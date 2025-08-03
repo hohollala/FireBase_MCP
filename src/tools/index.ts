@@ -14,6 +14,8 @@ import { analyticsTools, analyticsToolHandlers } from './analytics-tools';
 import { messagingTools, messagingToolHandlers } from './messaging-tools';
 import { hostingTools, hostingToolHandlers } from './hosting-tools';
 import { remoteConfigTools, remoteConfigToolHandlers } from './remote-config-tools';
+import { performanceTools, performanceToolHandlers } from './performance-tools';
+import { securityTools, securityToolHandlers } from './security-tools';
 
 /**
  * All available tools
@@ -60,6 +62,12 @@ export const allTools: Tool[] = [
 
   // Remote Config tools
   ...remoteConfigTools,
+
+  // Performance Monitoring tools
+  ...performanceTools,
+
+  // Security tools
+  ...securityTools,
 ];
 
 /**
@@ -104,6 +112,12 @@ export const allToolHandlers = {
 
   // Remote Config handlers
   ...remoteConfigToolHandlers,
+
+  // Performance Monitoring handlers
+  ...performanceToolHandlers,
+
+  // Security handlers
+  ...securityToolHandlers,
 };
 
 export * from './auth-tools';
@@ -115,3 +129,5 @@ export * from './analytics-tools';
 export * from './messaging-tools';
 export * from './hosting-tools';
 export * from './remote-config-tools';
+export * from './performance-tools';
+export * from './security-tools';

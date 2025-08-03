@@ -1,0 +1,121 @@
+name: Bug Report
+description: File a bug report to help us improve
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - hohollala
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! 🐛
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: What should happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: A clear and concise description of what actually happened.
+      placeholder: What actually happened?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Low (Minor inconvenience)
+        - Medium (Affects functionality)
+        - High (Breaks core functionality)
+        - Critical (System unusable)
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Please provide your environment details
+      placeholder: |
+        - OS: [e.g. Windows 11, macOS 13, Ubuntu 22.04]
+        - Node.js version: [e.g. 18.17.0]
+        - Package version: [e.g. 1.0.0]
+        - AI Client: [e.g. Claude Desktop, Cursor IDE]
+        - Firebase project type: [e.g. Web, Mobile, Admin SDK]
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+
+  - type: textarea
+    id: mcp-config
+    attributes:
+      label: MCP Configuration
+      description: Please share your MCP configuration (remove sensitive information)
+      render: json
+
+  - type: textarea
+    id: firebase-config
+    attributes:
+      label: Firebase Configuration
+      description: Please share relevant Firebase configuration (remove sensitive information)
+      render: json
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this bug hasn't been reported
+          required: true
+        - label: I have included all relevant information above
+          required: true
+        - label: I have removed any sensitive information from logs and configurations
+          required: true
+        - label: I am using a supported version of the package
+          required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here, including screenshots if applicable.
