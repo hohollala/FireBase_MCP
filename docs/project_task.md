@@ -29,10 +29,10 @@ Firebase 서비스들을 AI 개발 도구(Claude Code, Claude Desktop, Gemini CL
    - [x] 기본 MCP 메서드 (initialize, listTools, callTool)
 
 3. **Firebase Authentication 연동** (4일)
-   - [ ] Firebase Admin SDK 초기화
-   - [ ] Auth 서비스 클래스 구현
-   - [ ] 사용자 CRUD 도구 구현
-   - [ ] 커스텀 클레임 관리 도구
+   - [x] Firebase Admin SDK 초기화
+   - [x] Auth 서비스 클래스 구현
+   - [x] 사용자 CRUD 도구 구현
+   - [x] 커스텀 클레임 관리 도구
 
 4. **Cloud Firestore 기본 CRUD** (3일)
    - [ ] Firestore 서비스 클래스 구현

@@ -13,6 +13,8 @@ import {
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { logger, config, validateEnvironment } from '@utils/index';
+import { FirebaseServiceManager } from '@firebase/index';
+import { allTools, allToolHandlers } from '@tools/index';
 
 export class FirebaseMCPServer {
   private server: Server;
@@ -61,21 +63,7 @@ export class FirebaseMCPServer {
       logger.debug('Listing available tools');
 
       return {
-        tools: [
-          {
-            name: 'ping',
-            description: 'Test connectivity to the Firebase MCP server',
-            inputSchema: {
-              type: 'object',
-              properties: {
-                message: {
-                  type: 'string',
-                  description: 'Optional message to echo back',
-                },
-              },
-            },
-          },
-        ],
+        tools: allTools,
       };
     });
 
@@ -85,20 +73,12 @@ export class FirebaseMCPServer {
 
       logger.debug('Tool called', { name, args });
 
-      switch (name) {
-        case 'ping':
-          return {
-            content: [
-              {
-                type: 'text',
-                text: `Pong! ${args?.message || 'Firebase MCP Server is running'}`,
-              },
-            ],
-          };
-
-        default:
-          throw new Error(`Unknown tool: ${name}`);
+      const handler = allToolHandlers[name as keyof typeof allToolHandlers];
+      if (!handler) {
+        throw new Error(`Unknown tool: ${name}`);
       }
+
+      return await handler(args);
     });
 
     // Error handler
@@ -117,6 +97,9 @@ export class FirebaseMCPServer {
 
     // Validate environment before starting
     validateEnvironment();
+
+    // Initialize Firebase
+    await FirebaseServiceManager.getInstance().initialize();
 
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
@@ -138,6 +121,7 @@ export class FirebaseMCPServer {
     }
 
     await this.server.close();
+    await FirebaseServiceManager.getInstance().cleanup();
     this.isRunning = false;
 
     logger.info('Firebase MCP Server stopped');
