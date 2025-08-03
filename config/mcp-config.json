@@ -1,0 +1,98 @@
+{
+  "server": {
+    "name": "firebase-mcp-server",
+    "version": "1.0.0",
+    "description": "Firebase MCP Server for AI development tools"
+  },
+  "mcp": {
+    "transport": "stdio",
+    "capabilities": {
+      "tools": true,
+      "resources": true,
+      "prompts": false,
+      "logging": true
+    }
+  },
+  "firebase": {
+    "services": {
+      "auth": {
+        "enabled": true,
+        "emulator": {
+          "host": "localhost",
+          "port": 9099
+        }
+      },
+      "firestore": {
+        "enabled": true,
+        "emulator": {
+          "host": "localhost",
+          "port": 8080
+        }
+      },
+      "storage": {
+        "enabled": true,
+        "emulator": {
+          "host": "localhost",
+          "port": 9199
+        }
+      },
+      "functions": {
+        "enabled": true,
+        "emulator": {
+          "host": "localhost",
+          "port": 5001
+        }
+      },
+      "hosting": {
+        "enabled": true
+      },
+      "analytics": {
+        "enabled": true
+      },
+      "messaging": {
+        "enabled": true
+      },
+      "remoteConfig": {
+        "enabled": true
+      },
+      "realtimeDatabase": {
+        "enabled": true,
+        "emulator": {
+          "host": "localhost",
+          "port": 9000
+        }
+      },
+      "performance": {
+        "enabled": true
+      }
+    }
+  },
+  "security": {
+    "requireAuth": false,
+    "allowedOrigins": ["http://localhost:3001"],
+    "rateLimiting": {
+      "enabled": true,
+      "maxRequests": 100,
+      "windowMs": 60000
+    }
+  },
+  "performance": {
+    "maxConcurrentConnections": 50,
+    "requestTimeout": 30000,
+    "memoryLimit": 512,
+    "caching": {
+      "enabled": true,
+      "ttl": 300000
+    }
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "transports": ["console", "file"],
+    "file": {
+      "filename": "./logs/firebase-mcp.log",
+      "maxSize": "10m",
+      "maxFiles": 5
+    }
+  }
+}
