@@ -6,6 +6,7 @@
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { authTools, authToolHandlers } from './auth-tools';
+import { firestoreTools, firestoreToolHandlers } from './firestore-tools';
 
 /**
  * All available tools
@@ -28,6 +29,9 @@ export const allTools: Tool[] = [
   
   // Authentication tools
   ...authTools,
+
+  // Firestore tools
+  ...firestoreTools,
 ];
 
 /**
@@ -48,6 +52,10 @@ export const allToolHandlers = {
   
   // Authentication handlers
   ...authToolHandlers,
+
+  // Firestore handlers
+  ...firestoreToolHandlers,
 };
 
 export * from './auth-tools';
+export * from './firestore-tools';

@@ -7,11 +7,13 @@
 import * as admin from 'firebase-admin';
 import { logger, config } from '@utils/index';
 import { AuthService } from './auth.service';
+import { FirestoreService } from './firestore.service';
 
 export class FirebaseServiceManager {
   private static instance: FirebaseServiceManager;
   private app: admin.app.App | null = null;
   private authService: AuthService | null = null;
+  private firestoreService: FirestoreService | null = null;
 
   private constructor() {}
 
@@ -53,6 +55,7 @@ export class FirebaseServiceManager {
 
       // Initialize services
       this.authService = new AuthService(this.app);
+      this.firestoreService = new FirestoreService(this.app);
 
       logger.info('Firebase Admin SDK initialized successfully', {
         projectId: config.firebase.projectId,
@@ -84,6 +87,16 @@ export class FirebaseServiceManager {
   }
 
   /**
+   * Get Firestore service
+   */
+  getFirestoreService(): FirestoreService {
+    if (!this.firestoreService) {
+      throw new Error('Firebase not initialized. Call initialize() first.');
+    }
+    return this.firestoreService;
+  }
+
+  /**
    * Cleanup Firebase resources
    */
   async cleanup(): Promise<void> {
@@ -91,6 +104,7 @@ export class FirebaseServiceManager {
       await this.app.delete();
       this.app = null;
       this.authService = null;
+      this.firestoreService = null;
       logger.info('Firebase resources cleaned up');
     }
   }
@@ -98,3 +112,4 @@ export class FirebaseServiceManager {
 
 // Export services for easy access
 export * from './auth.service';
+export * from './firestore.service';
