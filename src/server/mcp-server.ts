@@ -98,16 +98,36 @@ export class FirebaseMCPServer {
           throw new Error(`Insufficient permissions for ${name}`);
         }
 
+        // Check if Firebase is available for Firebase-related tools
+        const firebaseManager = FirebaseServiceManager.getInstance();
+        const isFirebaseTool = name.startsWith('firebase_') || 
+                              name.startsWith('auth_') || 
+                              name.startsWith('firestore_') || 
+                              name.startsWith('storage_') || 
+                              name.startsWith('functions_') ||
+                              name.startsWith('analytics_') ||
+                              name.startsWith('messaging_') ||
+                              name.startsWith('performance_') ||
+                              name.startsWith('remote_config_') ||
+                              name.startsWith('hosting_') ||
+                              name.startsWith('realtime_database_') ||
+                              name.startsWith('security_');
+
+        if (isFirebaseTool && !firebaseManager.getApp()) {
+          throw new Error(`Firebase not configured - cannot execute ${name}. Please configure Firebase project and service account.`);
+        }
+
         // Find and execute handler
         const handler = allToolHandlers[name as keyof typeof allToolHandlers];
         if (!handler) {
           throw new Error(`Unknown tool: ${name}`);
         }
 
-        // Add auth context to args for handler use
+        // Add auth context and Firebase manager to args for handler use
         const enrichedArgs = {
           ...args,
-          _authContext: authContext
+          _authContext: authContext,
+          firebaseManager: firebaseManager
         };
 
         return await handler(enrichedArgs);
@@ -138,8 +158,16 @@ export class FirebaseMCPServer {
     // Validate environment before starting
     validateEnvironment();
 
-    // Initialize Firebase
-    await FirebaseServiceManager.getInstance().initialize();
+    // Initialize Firebase (optional - won't fail if Firebase is not configured)
+    try {
+      await FirebaseServiceManager.getInstance().initialize();
+      logger.info('Firebase services initialized successfully');
+    } catch (error) {
+      logger.warn('Firebase initialization failed - running in limited mode', { 
+        error: error instanceof Error ? error.message : error 
+      });
+      // Continue without Firebase - server will still work for basic MCP operations
+    }
 
     const transport = new StdioServerTransport();
     await this.server.connect(transport);

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase MCP Server - 간단한 가이드</title>
+    <meta name="description" content="Firebase MCP Server는 AI 개발 도구를 위한 Firebase 통합 솔루션입니다.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🔥 Firebase MCP Server</h1>
+            <p class="subtitle">AI 개발 도구를 위한 Firebase 통합 솔루션</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#features">기능</a></li>
+                <li><a href="#installation">설치</a></li>
+                <li><a href="#configuration">설정</a></li>
+                <li><a href="#usage">사용법</a></li>
+                <li><a href="#tools">도구 목록</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="overview">
+                <h2>📋 프로젝트 개요</h2>
+                <p>Firebase MCP Server는 Claude Code, Cursor IDE, Gemini CLI 등의 AI 개발 도구가 Firebase 서비스와 원활하게 상호작용할 수 있도록 하는 Model Context Protocol (MCP) 서버입니다.</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>🚀 주요 기능</h3>
+                        <ul>
+                            <li>11개 Firebase 서비스 완전 지원</li>
+                            <li>70+ 개의 MCP 도구</li>
+                            <li>실시간 데이터 동기화</li>
+                            <li>보안 및 인증 시스템</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>🔧 지원 서비스</h3>
+                        <div>
+                            <span class="badge">Authentication</span>
+                            <span class="badge">Firestore</span>
+                            <span class="badge">Storage</span>
+                            <span class="badge">Functions</span>
+                            <span class="badge">Analytics</span>
+                            <span class="badge">Messaging</span>
+                            <span class="badge">Performance</span>
+                            <span class="badge">Remote Config</span>
+                            <span class="badge">Hosting</span>
+                            <span class="badge">Realtime DB</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features">
+                <h2>🚀 주요 기능</h2>
+                <p>Firebase MCP Server는 다양한 Firebase 서비스를 AI 개발 도구와 연동하여 효율적인 개발 환경을 제공합니다.</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>🔐 인증 및 보안</h3>
+                        <ul>
+                            <li>사용자 인증 관리</li>
+                            <li>권한 기반 접근 제어</li>
+                            <li>보안 규칙 설정</li>
+                            <li>토큰 관리</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>💾 데이터 관리</h3>
+                        <ul>
+                            <li>Firestore 문서 CRUD</li>
+                            <li>실시간 데이터 동기화</li>
+                            <li>쿼리 및 필터링</li>
+                            <li>데이터 백업 및 복원</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>📁 파일 스토리지</h3>
+                        <ul>
+                            <li>파일 업로드/다운로드</li>
+                            <li>이미지 처리 및 최적화</li>
+                            <li>보안 규칙 적용</li>
+                            <li>CDN 통합</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>⚡ 서버리스 함수</h3>
+                        <ul>
+                            <li>Cloud Functions 배포</li>
+                            <li>트리거 설정</li>
+                            <li>로깅 및 모니터링</li>
+                            <li>성능 최적화</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="installation">
+                <h2>📦 설치 방법</h2>
+                
+                <h3>1. Git에서 클론</h3>
+                <pre><code>git clone https://github.com/hohollala/FireBase_MCP.git
+cd FireBase_MCP
+npm install
+npm run build
+npm install .</code></pre>
+
+
+                <h3>2. 글로벌 설치 (권장)</h3>
+                <pre><code>npm install -g firebase-mcp-server</code></pre>
+
+                <div class="info">
+                    <strong>💡 참고:</strong> 아직 NPM 패키지로 배포되지 않았습니다. GitHub에서 직접 클론해서 사용해주세요.
+                </div>
+            </section>
+
+            <section id="configuration">
+                <h2>⚙️ 설정 방법</h2>
+                
+                <h3>1. Firebase 서비스 계정 설정</h3>
+                <p>Firebase Console에서 서비스 계정 키를 생성하고 <code>config/</code> 폴더에 저장합니다.</p>
+                
+                <div class="info">
+                    <strong>💡 권장 파일명:</strong> <code>config/service-account.json</code>
+                </div>
+
+                <h3>2. 환경 변수 설정</h3>
+                <pre><code>export FIREBASE_PROJECT_ID=your-project-id
+export FIREBASE_SERVICE_ACCOUNT_PATH=./config/service-account.json</code></pre>
+
+                <h3>3. Claude Code 설정</h3>
+                <p>프로젝트 루트에 <code>.claude/mcp.json</code> 파일을 생성합니다:</p>
+                <pre><code>{
+  "mcpServers": {
+    "firebase": {
+      "command": "firebase-mcp-server",
+      "args": [],
+      "env": {
+        "FIREBASE_PROJECT_ID": "your-project-id",
+        "FIREBASE_SERVICE_ACCOUNT_PATH": "./config/service-account.json"
+      }
+    }
+  }
+}</code><button class="copy-btn" onclick="copyToClipboard(this)">복사</button></pre>
+
+                <div class="warning">
+                    <strong>⚠️ 보안 주의:</strong> 서비스 계정 키는 절대 공개 저장소에 커밋하지 마세요.
+                </div>
+            </section>
+
+            <section id="usage">
+                <h2>🚀 사용 방법</h2>
+                
+                <h3>1. 기본 사용법</h3>
+                <p>Claude Desktop이나 다른 MCP 클라이언트에서 Firebase 관련 작업을 요청하면 자동으로 적절한 도구가 실행됩니다.</p>
+                
+                <div class="info">
+                    <strong>💡 사용 예시:</strong>
+                    <ul>
+                        <li>"새 사용자를 생성해주세요"</li>
+                        <li>"Firestore에서 데이터를 조회해주세요"</li>
+                        <li>"Storage에 파일을 업로드해주세요"</li>
+                    </ul>
+                </div>
+
+                <h3>3. Claude Code 설정</h3>
+                <p>프로젝트 루트에 <code>.claude/mcp.json</code> 파일을 생성합니다:</p>
+                
+                <h4>Windows PowerShell용 MCP 서버 추가:</h4>
+                <pre><code>claude mcp add firebase-mcp -s user -- node "$PWD/dist/index.js"</code></pre>
+                
+                <h4>Windows CMD용 MCP 서버 추가:</h4>
+                <pre><code>claude mcp add firebase-mcp -s user -- node "[설치경로]/dist/index.js"</code></pre>
+                
+                <h4>macOS/Linux용 MCP 서버 추가:</h4>
+                <pre><code>claude mcp add firebase-mcp -s user -- node $(pwd)/dist/index.js</code></pre>
+                
+                <h4>수동 설정: ~/.claude.json 파일 편집</h4>
+                <p>Claude Code 설정 파일을 직접 편집하여 MCP 서버를 추가할 수 있습니다.</p>
+                <p><strong>Windows:</strong> <code>C:\Users\사용자명\.claude.json</code></p>
+                <pre><code>{
+  "mcpServers": {
+    "firebase-mcp": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "[설치폴더경로]/dist/index.js"
+      ],
+      "env": {
+        "FIREBASE_PROJECT_ID": "your-project-id",
+        "FIREBASE_SERVICE_ACCOUNT_PATH": "./config/service-account.json"
+      }
+    }
+  }
+}</code><button class="copy-btn" onclick="copyToClipboard(this)">복사</button></pre>
+            </section>
+
+            <section id="tools">
+                <h2>🛠️ 사용 가능한 도구</h2>
+                
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="auth">Authentication (9개)</button>
+                        <button class="tab-btn" data-tab="firestore">Firestore (10개)</button>
+                        <button class="tab-btn" data-tab="storage">Storage (8개)</button>
+                        <button class="tab-btn" data-tab="functions">Functions (6개)</button>
+                        <button class="tab-btn" data-tab="analytics">Analytics (5개)</button>
+                        <button class="tab-btn" data-tab="messaging">Messaging (7개)</button>
+                        <button class="tab-btn" data-tab="performance">Performance (4개)</button>
+                        <button class="tab-btn" data-tab="remote-config">Remote Config (3개)</button>
+                        <button class="tab-btn" data-tab="hosting">Hosting (4개)</button>
+                        <button class="tab-btn" data-tab="realtime-db">Realtime DB (6개)</button>
+                        <button class="tab-btn" data-tab="security">Security (8개)</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <!-- Authentication Tab -->
+                        <div class="tab-pane active" id="auth">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_create_user</div>
+                                    <div class="tool-desc">새 사용자 계정 생성</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_get_user</div>
+                                    <div class="tool-desc">사용자 정보 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_update_user</div>
+                                    <div class="tool-desc">사용자 정보 업데이트</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_delete_user</div>
+                                    <div class="tool-desc">사용자 계정 삭제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_list_users</div>
+                                    <div class="tool-desc">사용자 목록 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_set_custom_claims</div>
+                                    <div class="tool-desc">사용자 커스텀 클레임 설정</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_verify_id_token</div>
+                                    <div class="tool-desc">ID 토큰 검증</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_create_custom_token</div>
+                                    <div class="tool-desc">커스텀 토큰 생성</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">auth_get_user_by_email</div>
+                                    <div class="tool-desc">이메일로 사용자 조회</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Firestore Tab -->
+                        <div class="tab-pane" id="firestore">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_get_document</div>
+                                    <div class="tool-desc">문서 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_set_document</div>
+                                    <div class="tool-desc">문서 생성/수정</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_add_document</div>
+                                    <div class="tool-desc">자동 ID로 문서 추가</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_query_documents</div>
+                                    <div class="tool-desc">조건부 문서 쿼리</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_delete_document</div>
+                                    <div class="tool-desc">문서 삭제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_batch_write</div>
+                                    <div class="tool-desc">배치 쓰기 작업</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_transaction</div>
+                                    <div class="tool-desc">트랜잭션 실행</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_list_collections</div>
+                                    <div class="tool-desc">컬렉션 목록 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_get_collection</div>
+                                    <div class="tool-desc">컬렉션 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">firestore_create_index</div>
+                                    <div class="tool-desc">인덱스 생성</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Storage Tab -->
+                        <div class="tab-pane" id="storage">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_upload_file</div>
+                                    <div class="tool-desc">파일 업로드</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_download_file</div>
+                                    <div class="tool-desc">파일 다운로드</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_delete_file</div>
+                                    <div class="tool-desc">파일 삭제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_get_download_url</div>
+                                    <div class="tool-desc">다운로드 URL 생성</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_list_files</div>
+                                    <div class="tool-desc">파일 목록 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_get_metadata</div>
+                                    <div class="tool-desc">파일 메타데이터 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_update_metadata</div>
+                                    <div class="tool-desc">파일 메타데이터 업데이트</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">storage_move_file</div>
+                                    <div class="tool-desc">파일 이동</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Functions Tab -->
+                        <div class="tab-pane" id="functions">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">functions_deploy</div>
+                                    <div class="tool-desc">함수 배포</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">functions_list</div>
+                                    <div class="tool-desc">함수 목록 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">functions_delete</div>
+                                    <div class="tool-desc">함수 삭제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">functions_call</div>
+                                    <div class="tool-desc">함수 호출</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">functions_logs</div>
+                                    <div class="tool-desc">함수 로그 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">functions_config</div>
+                                    <div class="tool-desc">함수 설정 관리</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analytics Tab -->
+                        <div class="tab-pane" id="analytics">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">analytics_get_events</div>
+                                    <div class="tool-desc">이벤트 데이터 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">analytics_get_users</div>
+                                    <div class="tool-desc">사용자 데이터 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">analytics_get_conversions</div>
+                                    <div class="tool-desc">전환 데이터 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">analytics_export_data</div>
+                                    <div class="tool-desc">데이터 내보내기</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">analytics_get_reports</div>
+                                    <div class="tool-desc">리포트 생성</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Messaging Tab -->
+                        <div class="tab-pane" id="messaging">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_send</div>
+                                    <div class="tool-desc">메시지 전송</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_send_multicast</div>
+                                    <div class="tool-desc">다중 사용자 메시지 전송</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_send_topic</div>
+                                    <div class="tool-desc">토픽 메시지 전송</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_subscribe_topic</div>
+                                    <div class="tool-desc">토픽 구독</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_unsubscribe_topic</div>
+                                    <div class="tool-desc">토픽 구독 해제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_get_delivery_status</div>
+                                    <div class="tool-desc">전송 상태 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">messaging_validate_message</div>
+                                    <div class="tool-desc">메시지 유효성 검사</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Tab -->
+                        <div class="tab-pane" id="performance">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">performance_get_traces</div>
+                                    <div class="tool-desc">성능 추적 데이터 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">performance_get_metrics</div>
+                                    <div class="tool-desc">성능 메트릭 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">performance_create_trace</div>
+                                    <div class="tool-desc">성능 추적 생성</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">performance_get_reports</div>
+                                    <div class="tool-desc">성능 리포트 생성</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Remote Config Tab -->
+                        <div class="tab-pane" id="remote-config">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">remote_config_get</div>
+                                    <div class="tool-desc">원격 설정 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">remote_config_set</div>
+                                    <div class="tool-desc">원격 설정 업데이트</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">remote_config_publish</div>
+                                    <div class="tool-desc">원격 설정 배포</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hosting Tab -->
+                        <div class="tab-pane" id="hosting">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">hosting_deploy</div>
+                                    <div class="tool-desc">사이트 배포</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">hosting_list_sites</div>
+                                    <div class="tool-desc">사이트 목록 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">hosting_delete_site</div>
+                                    <div class="tool-desc">사이트 삭제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">hosting_get_versions</div>
+                                    <div class="tool-desc">배포 버전 조회</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Realtime Database Tab -->
+                        <div class="tab-pane" id="realtime-db">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">realtime_db_get</div>
+                                    <div class="tool-desc">데이터 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">realtime_db_set</div>
+                                    <div class="tool-desc">데이터 설정</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">realtime_db_push</div>
+                                    <div class="tool-desc">데이터 추가</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">realtime_db_update</div>
+                                    <div class="tool-desc">데이터 업데이트</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">realtime_db_remove</div>
+                                    <div class="tool-desc">데이터 삭제</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">realtime_db_query</div>
+                                    <div class="tool-desc">데이터 쿼리</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Tab -->
+                        <div class="tab-pane" id="security">
+                            <div class="tool-list">
+                                <div class="tool-item">
+                                    <div class="tool-name">security_rules_get</div>
+                                    <div class="tool-desc">보안 규칙 조회</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_rules_set</div>
+                                    <div class="tool-desc">보안 규칙 설정</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_rules_test</div>
+                                    <div class="tool-desc">보안 규칙 테스트</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_rules_deploy</div>
+                                    <div class="tool-desc">보안 규칙 배포</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_audit_logs</div>
+                                    <div class="tool-desc">보안 감사 로그</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_permissions</div>
+                                    <div class="tool-desc">권한 관리</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_encryption</div>
+                                    <div class="tool-desc">암호화 설정</div>
+                                </div>
+                                <div class="tool-item">
+                                    <div class="tool-name">security_monitoring</div>
+                                    <div class="tool-desc">보안 모니터링</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success">
+                    <strong>✅ 총 70+개의 도구:</strong> 11개 Firebase 서비스에 대한 완전한 MCP 도구 세트를 제공합니다.
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Firebase MCP Server. Made with ❤️ for the AI development community.</p>
+            <p>
+                <a href="https://github.com/hohollala/FireBase_MCP">GitHub</a> |
+                <a href="https://www.npmjs.com/package/firebase-mcp-server">NPM</a> |
+                <a href="https://hub.docker.com/r/hohollala/firebase-mcp-server">Docker Hub</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab System JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding pane
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+
+        // Copy to Clipboard Function
+        function copyToClipboard(button) {
+            const pre = button.parentElement;
+            const code = pre.querySelector('code');
+            const text = code.textContent;
+            
+            // Fallback for older browsers
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    button.textContent = '복사됨!';
+                    setTimeout(() => {
+                        button.textContent = '복사';
+                    }, 2000);
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text, button);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text, button);
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text, button) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                button.textContent = '복사됨!';
+                setTimeout(() => {
+                    button.textContent = '복사';
+                }, 2000);
+            } catch (err) {
+                button.textContent = '실패';
+                setTimeout(() => {
+                    button.textContent = '복사';
+                }, 2000);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Copy from clipboard icon
+        document.addEventListener('DOMContentLoaded', function() {
+            const preElements = document.querySelectorAll('pre');
+            
+            preElements.forEach(pre => {
+                pre.addEventListener('click', function(e) {
+                    // 클릭이 ::before 요소 근처에서 발생했는지 확인
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // 우상단 영역 클릭 시 복사
+                    if (x > rect.width - 50 && y < 50) {
+                        const code = this.querySelector('code');
+                        if (code) {
+                            navigator.clipboard.writeText(code.textContent).then(() => {
+                                // 복사 성공 피드백 - 아이콘 변경
+                                this.classList.add('copied');
+                                
+                                setTimeout(() => {
+                                    this.classList.remove('copied');
+                                }, 2000);
+                            }).catch(err => {
+                                console.error('복사 실패:', err);
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

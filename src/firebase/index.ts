@@ -62,8 +62,24 @@ export class FirebaseServiceManager {
         return;
       }
 
+      // Check if Firebase configuration is available
+      if (!config.firebase.projectId || config.firebase.projectId === '') {
+        logger.info('Firebase project ID not configured - skipping Firebase initialization');
+        return;
+      }
+
+      // Check if service account file exists
+      const fs = require('fs');
+      const path = require('path');
+      const serviceAccountPath = path.resolve(config.firebase.serviceAccountKeyPath);
+      
+      if (!fs.existsSync(serviceAccountPath)) {
+        logger.info('Firebase service account file not found - skipping Firebase initialization');
+        return;
+      }
+
       // Load service account key
-      const serviceAccount = require(config.firebase.serviceAccountKeyPath);
+      const serviceAccount = require(serviceAccountPath);
 
       // Initialize Firebase Admin SDK
       this.app = admin.initializeApp({

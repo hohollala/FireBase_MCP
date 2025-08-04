@@ -24,20 +24,99 @@ Firebase MCP (Model Context Protocol) Server enables AI development tools like C
 
 ## 🛠️ Installation
 
+### 로컬 설치
 ```bash
 # Clone the repository
-git clone https://github.com/firebase-mcp/firebase-mcp-server.git
-cd firebase-mcp-server
+git clone https://github.com/hohollala/FireBase_MCP.git
+cd FireBase_MCP
 
 # Install dependencies
 npm install
 
-# Copy environment configuration
-cp .env.example .env
-
 # Build the project
 npm run build
+
+# Install locally
+npm install .
 ```
+
+### 글로벌 설치 (권장)
+```bash
+# 글로벌 설치
+npm install -g firebase-mcp-server
+```
+
+### 🔥 자동 커맨드 설치
+
+설치 과정에서 자동으로 `~/.claude/commands/fb/` 폴더가 생성되고 모든 Firebase 명령어가 설치됩니다:
+
+#### 🚀 프로젝트 초기화 (init)
+
+프로젝트 구조와 샘플 파일들을 자동으로 생성하려면:
+
+```bash
+# 프로젝트 구조 초기화
+npm run init
+
+# 또는 직접 실행
+node scripts/setup-fb-commands.js init
+```
+
+이 명령어는 다음을 생성합니다:
+- `config/` 폴더
+- `config/service-account.json` (샘플)
+- `config/firebase-service-account.json` (샘플)
+- `config/firebase-adminsdk.json` (샘플)
+- `config/firebase-service-account-production.json` (샘플)
+- `config/firebase-service-account-development.json` (샘플)
+- `.env` (샘플)
+- `.env.example` (샘플)
+- `config/README.md` (문서)
+
+```bash
+# 설치 후 자동으로 생성되는 파일들
+~/.claude/commands/
+├── FB.md                    # Firebase 전체 개요
+└── fb/                      # Firebase 명령어 디렉토리
+    ├── README.md            # 디렉토리 인덱스
+    ├── FB-auth.md           # 인증 서비스
+    ├── FB-auth-create_user.md
+    ├── FB-auth-get_user.md
+    ├── FB-firestore.md      # Firestore 서비스
+    ├── FB-firestore-get_document.md
+    ├── FB-storage.md        # Storage 서비스
+    └── ... (70+ 개의 명령어 파일)
+```
+
+### 📋 사용법
+
+1. **Claude Code에서 명령어 확인:**
+   ```bash
+   /fb                    # 모든 Firebase 명령어 보기
+   FB                     # Firebase 개요 보기
+   FB-auth               # 인증 관련 명령어
+   FB-firestore          # Firestore 관련 명령어
+   ```
+
+2. **자연어로 요청:**
+   ```bash
+   "새 사용자를 생성해주세요"
+   "Firestore에서 데이터를 조회해주세요"
+   "Storage에 파일을 업로드해주세요"
+   ```
+
+### 🎯 Custom Commands Auto-Generation
+
+The build process automatically generates 50+ Claude Code custom commands:
+
+- **FB** - Firebase services overview
+- **FB-auth** - Authentication commands
+- **FB-firestore** - Firestore database commands  
+- **FB-storage** - Cloud Storage commands
+- **FB-functions** - Cloud Functions commands
+- And 40+ more detailed commands
+
+Commands are installed to `~/.claude/commands/` during build/install.
 
 ## ⚙️ Configuration
 
@@ -64,6 +143,89 @@ npm run build
          "command": "node",
          "args": ["/path/to/firebase-mcp-server/dist/index.js"],
          "transport": "stdio"
+       }
+     }
+   }
+   ```
+
+   **Claude Code**:
+   
+   **방법 1: CLI 명령어로 등록 (권장)**
+   
+   **Windows PowerShell:**
+   ```powershell
+   claude mcp add firebase-mcp -s user -- node "$PWD/dist/index.js"
+   ```
+   
+   **Windows CMD:**
+   ```cmd
+   claude mcp add firebase-mcp -s user -- node "[설치경로]/dist/index.js"
+   ```
+   
+   **macOS/Linux:**
+   ```bash
+   claude mcp add firebase-mcp -s user -- node $(pwd)/dist/index.js
+   ```
+   
+   **방법 2: 글로벌 설치 후 등록**
+   ```bash
+   # 글로벌 설치
+   npm install -g firebase-mcp-server
+   
+   # 등록
+   claude mcp add firebase-mcp-server -s user -- firebase-mcp-server
+   ```
+   
+   **방법 3: 수동 설정 파일**
+   
+   `~/.claude.json` 파일을 생성하고 다음 내용을 추가:
+   ```json
+   {
+     "mcpServers": {
+       "firebase-mcp": {
+         "type": "stdio",
+         "command": "node",
+         "args": [
+           "[설치폴더경로]/dist/index.js"
+         ],
+         "env": {
+           "FIREBASE_PROJECT_ID": "your-project-id",
+           "FIREBASE_SERVICE_ACCOUNT_PATH": "./config/service-account.json"
+         }
+       }
+     }
+   }
+   ```
+
+   **방법 2: 프로젝트별 설정 파일**
+   ```json
+   // .claude/mcp.json (프로젝트 루트)
+   {
+     "mcpServers": {
+       "firebase": {
+         "command": "firebase-mcp-server",
+         "args": [],
+         "env": {
+           "FIREBASE_PROJECT_ID": "your-project-id",
+           "FIREBASE_SERVICE_ACCOUNT_PATH": "./config/service-account.json"
+         }
+       }
+     }
+   }
+   ```
+
+   **방법 3: 전역 설정 파일**
+   ```json
+   // ~/.claude/mcp.json (사용자 홈 디렉토리)
+   {
+     "mcpServers": {
+       "firebase": {
+         "command": "firebase-mcp-server",
+         "args": [],
+         "env": {
+           "FIREBASE_PROJECT_ID": "your-project-id",
+           "FIREBASE_SERVICE_ACCOUNT_PATH": "/path/to/service-account.json"
+         }
        }
      }
    }

@@ -10,6 +10,7 @@
   "files": [
     "dist/**/*",
     "config/README.md",
+    "commands/**/*",
     "README.md",
     "LICENSE"
   ],
@@ -22,7 +23,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "tsc && webpack",
+    "build": "tsc && webpack && npm run setup-commands",
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
     "test": "jest",
@@ -38,6 +39,10 @@
     "docs": "typedoc src --out docs/api",
     "docs:generate": "ts-node scripts/generate-docs.ts",
     "docs:api": "ts-node scripts/generate-docs.ts",
+    "setup-commands": "node scripts/setup-fb-commands.js",
+    "init": "node scripts/setup-fb-commands.js init",
+    "install-commands": "npm run setup-commands",
+    "postinstall": "npm run setup-commands",
     "prepare": "npm run build",
     "prepublishOnly": "npm run build && npm test",
     "prepack": "npm run build",

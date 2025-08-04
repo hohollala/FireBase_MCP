@@ -76,7 +76,7 @@ function loadConfig(): Config {
     },
     firebase: {
       projectId: process.env.FIREBASE_PROJECT_ID || '',
-      serviceAccountKeyPath: process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH || './config/firebase-admin-key.json',
+      serviceAccountKeyPath: process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH || './config/service-account.json',
     },
     webDashboard: {
       enabled: process.env.WEB_DASHBOARD_ENABLED === 'true',
