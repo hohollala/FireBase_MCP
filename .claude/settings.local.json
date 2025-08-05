@@ -22,7 +22,12 @@
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_take_screenshot",
       "Bash(node:*)",
-      "Bash(npm run setup-commands:*)"
+      "Bash(npm run setup-commands:*)",
+      "Bash(timeout:*)",
+      "mcp__firebase-mcp__ping",
+      "mcp__firebase-mcp__firebase_auth_list_users",
+      "Bash(claude mcp:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

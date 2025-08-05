@@ -25,11 +25,7 @@ const environmentSchema = Joi.object({
   }).required(),
   
   firebase: Joi.object({
-    projectId: Joi.string().when('$isTest', {
-      is: false,
-      then: Joi.required(),
-      otherwise: Joi.optional().allow(''),
-    }),
+    projectId: Joi.string().optional().allow(''),
     serviceAccountKeyPath: Joi.string().required(),
   }).required(),
   

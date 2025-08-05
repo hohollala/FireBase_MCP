@@ -74,17 +74,33 @@ export class FirebaseServiceManager {
       const serviceAccountPath = path.resolve(config.firebase.serviceAccountKeyPath);
       
       if (!fs.existsSync(serviceAccountPath)) {
-        logger.info('Firebase service account file not found - skipping Firebase initialization');
+        logger.info('Firebase service account file not found - skipping Firebase initialization', {
+          expectedPath: serviceAccountPath
+        });
         return;
       }
 
-      // Load service account key
-      const serviceAccount = require(serviceAccountPath);
+      // Load and validate service account key
+      const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+      
+      // Validate service account has required fields and isn't a template
+      if (!serviceAccount.project_id || 
+          !serviceAccount.private_key || 
+          !serviceAccount.client_email ||
+          serviceAccount.project_id === 'your-project-id' ||
+          serviceAccount.private_key.includes('YOUR_PRIVATE_KEY_HERE')) {
+        logger.info('Firebase service account appears to be a template or incomplete - skipping Firebase initialization', {
+          projectId: serviceAccount.project_id,
+          hasPrivateKey: !!serviceAccount.private_key && !serviceAccount.private_key.includes('YOUR_PRIVATE_KEY_HERE'),
+          hasClientEmail: !!serviceAccount.client_email
+        });
+        return;
+      }
 
       // Initialize Firebase Admin SDK
       this.app = admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        projectId: config.firebase.projectId,
+        projectId: config.firebase.projectId || serviceAccount.project_id,
       });
 
       // Initialize services
@@ -101,22 +117,29 @@ export class FirebaseServiceManager {
       this.permissionManager = new PermissionManager();
 
       logger.info('Firebase Admin SDK initialized successfully', {
-        projectId: config.firebase.projectId,
+        projectId: serviceAccount.project_id,
       });
     } catch (error) {
-      logger.error('Failed to initialize Firebase Admin SDK', { error });
-      throw error;
+      logger.warn('Firebase initialization failed - running in limited mode without Firebase services', { 
+        error: error instanceof Error ? error.message : String(error),
+        configPath: config.firebase.serviceAccountKeyPath
+      });
+      // Don't throw error - allow server to run without Firebase
     }
   }
 
   /**
    * Get Firebase app instance
    */
-  getApp(): admin.app.App {
-    if (!this.app) {
-      throw new Error('Firebase not initialized. Call initialize() first.');
-    }
+  getApp(): admin.app.App | null {
     return this.app;
+  }
+
+  /**
+   * Check if Firebase is initialized
+   */
+  isInitialized(): boolean {
+    return this.app !== null;
   }
 
   /**

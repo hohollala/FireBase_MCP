@@ -115,7 +115,7 @@
 cd FireBase_MCP
 npm install
 npm run build
-npm install .</code></pre>
+npm install  -g .</code></pre>
 
 
                 <h3>2. 글로벌 설치 (권장)</h3>
@@ -205,6 +205,34 @@ export FIREBASE_SERVICE_ACCOUNT_PATH=./config/service-account.json</code></pre>
     }
   }
 }</code><button class="copy-btn" onclick="copyToClipboard(this)">복사</button></pre>
+
+                <h4>수동 생성 방법</h4>
+                <p>명령어로 생성할 수 없는 경우 수동으로 폴더와 파일을 생성할 수 있습니다:</p>
+                
+                <h5>Windows PowerShell:</h5>
+                <pre><code># ~/.claude/commands/fb 폴더 생성
+New-Item -Path "$env:USERPROFILE\.claude\commands\fb" -ItemType Directory -Force
+
+# 빌드 스크립트 실행
+npm run setup-commands</code></pre>
+                
+                <h5>Windows CMD:</h5>
+                <pre><code># ~/.claude/commands/fb 폴더 생성
+mkdir "%USERPROFILE%\.claude\commands\fb"
+
+# 빌드 스크립트 실행
+npm run setup-commands</code></pre>
+                
+                <h5>macOS/Linux:</h5>
+                <pre><code># ~/.claude/commands/fb 폴더 생성
+mkdir -p ~/.claude/commands/fb
+
+# 빌드 스크립트 실행
+npm run setup-commands</code></pre>
+                
+                <div class="info">
+                    <strong>💡 팁:</strong> 수동 생성 후에는 Claude Code를 재시작해야 새로운 명령어들이 인식됩니다.
+                </div>
             </section>
 
             <section id="tools">

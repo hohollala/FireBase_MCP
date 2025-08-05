@@ -52,7 +52,7 @@ function loadConfig(): Config {
   const nodeEnv = process.env.NODE_ENV || 'development';
   
   // Load MCP config file
-  const mcpConfigPath = path.join(process.cwd(), 'config', 'mcp-config.json');
+  const mcpConfigPath = path.join(__dirname, '..', '..', 'config', 'mcp-config.json');
   
   try {
     if (fs.existsSync(mcpConfigPath)) {
@@ -76,7 +76,7 @@ function loadConfig(): Config {
     },
     firebase: {
       projectId: process.env.FIREBASE_PROJECT_ID || '',
-      serviceAccountKeyPath: process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH || './config/service-account.json',
+      serviceAccountKeyPath: process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH || path.join(__dirname, '..', '..', 'config', 'service-account.json'),
     },
     webDashboard: {
       enabled: process.env.WEB_DASHBOARD_ENABLED === 'true',
